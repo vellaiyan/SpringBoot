@@ -8,3 +8,5 @@ spring.datasource.username: root
 spring.datasource.password: VellaiyanI22146
 spring.datasource.driver-class-name: com.mysql.jdbc.Driver
 spring.jpa.generate-ddl: true
+
+app.secret: employeemanagement

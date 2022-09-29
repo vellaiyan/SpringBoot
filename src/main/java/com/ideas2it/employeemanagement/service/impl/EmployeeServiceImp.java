@@ -1,4 +1,4 @@
-package com.ideas2it.employeemanagement.service.iml;
+package com.ideas2it.employeemanagement.service.impl;
 
 import com.ideas2it.employeemanagement.constants.EmployeeConstants;
 import com.ideas2it.employeemanagement.dto.EmployeeDto;
@@ -7,6 +7,7 @@ import com.ideas2it.employeemanagement.mapper.EmployeeMapper;
 import com.ideas2it.employeemanagement.model.Employee;
 import com.ideas2it.employeemanagement.repo.EmployeeRepository;
 import com.ideas2it.employeemanagement.service.EmployeeService;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,18 +33,15 @@ public class EmployeeServiceImp implements EmployeeService {
 
     @Override
     public List<EmployeeDto> getEmployees() {
-        List<Employee> employees = (List<Employee>) employeeRepository.getEmployeesByStatus(EmployeeConstants.ACTIVE);
-        return employees.stream().map(employeeMapper::toDto).collect(Collectors.toList());
+        return ((List<Employee>) employeeRepository.getEmployeesByStatus(EmployeeConstants.ACTIVE))
+                .stream().map(employeeMapper::toDto).collect(Collectors.toList());
     }
 
     @Override
-    public EmployeeDto getEmployeeById(int employeeId) throws UserNotFoundException {
-        Optional<Employee> employee = employeeRepository.findByEmployeeIdAndStatus(employeeId, EmployeeConstants.ACTIVE);
-        try {
-            return employeeMapper.toDto(employee.get());
-        } catch (NoSuchElementException noSuchElementException) {
-            throw new UserNotFoundException("Employee Not Found");
-        }
+    public EmployeeDto getEmployeeById(int employeeId) {
+            return employeeMapper.toDto((employeeRepository.findByEmployeeIdAndStatus(employeeId, EmployeeConstants.ACTIVE))
+                    .get());
+
     }
 
     @Override
